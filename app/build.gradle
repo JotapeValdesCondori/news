@@ -47,4 +47,8 @@ dependencies {
 
     // Java Faker!
     implementation 'com.github.javafaker:javafaker:1.0.2'
+
+    // Hashing libreries: http://github.com/OpenHFT/Zero-Allocation-Hashing
+    implementation 'net.openhft:zero-allocation-hashing:0.12'
+
 }
