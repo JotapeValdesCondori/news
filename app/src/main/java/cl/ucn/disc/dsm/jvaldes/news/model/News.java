@@ -98,13 +98,29 @@ public class News {
 
         this.id = LongHashFunction.xx().hashChars(title + "|" + source + "|" + author);
 
+        // Validacion de url
+        Validation.notNull(url,"url");
+
         this.url = url;
+
+        // Validacion urlImage
+        Validation.notNull(urlImage, "urlImage");
+
         this.urlImage = urlImage;
+
+        // Validacion de descripcion
+        Validation.minSize(desciption, 10, "description");
+
         this.desciption = desciption;
 
+        // Validacion de Contenido
         Validation.notNull(content, "content");
+
         this.content = content;
+
+        // Validacion de fecha de publicacion
         Validation.notNull(publishedAt, "publishedAt");
+
         this.publishedAt = publishedAt;
     }
 
