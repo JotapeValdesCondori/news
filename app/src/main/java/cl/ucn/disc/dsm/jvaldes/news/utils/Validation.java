@@ -16,10 +16,11 @@ package cl.ucn.disc.dsm.jvaldes.news.utils;
 public final class Validation {
 
     /**
+     * Check the size
      *
-     * @param value to check.
-     * @param minSize to check.
-     * @param message to check.
+     * @param value     to check.
+     * @param minSize   to fail.
+     * @param message   to throw in case of null.
      */
 
     public static void minSize(String value, int minSize, String message) {
