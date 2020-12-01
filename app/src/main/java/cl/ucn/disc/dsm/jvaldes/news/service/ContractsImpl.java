@@ -10,38 +10,103 @@
 
 package cl.ucn.disc.dsm.jvaldes.news.service;
 
+import com.github.javafaker.Faker;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import cl.ucn.disc.dsm.jvaldes.news.model.News;
+import cl.ucn.disc.dsm.jvaldes.news.utils.Validation;
 
 /**
  * @author Juan Valdes
  */
 
 public class ContractsImpl implements Contracts {
+
     /**
-     * Get the list of News
+     * The Logger.
+     */
+    private static final Logger log = LoggerFactory.getLogger(ContractsImpl.class);
+
+    /**
+     * The List of news.
+     */
+    private final List<News> theNews = new ArrayList<>();
+
+    /**
+     * The Contructor.
+     */
+
+    public ContractsImpl(){
+
+        //The Faker
+        final Faker faker = Faker.instance();
+
+        for ( int i = 0; i <5; i++){
+
+            this.theNews.add(new News(
+                            faker.book().title(),
+                            faker.name().username(),
+                            faker.name().fullName(),
+                            faker.internet().url(),
+                            faker.internet().avatar(),
+                            faker.harryPotter().quote(),
+                            faker.lorem().paragraph(3),
+                            ZonedDateTime.now(ZoneId.of("-3"))
+            ));
+
+        }
+    }
+
+    /**
+     * Get the list of News.
      *
      * @param size size of the list.
      * @return the List of News.
      */
+
     @Override
     public List<News> retriveNews(final Integer size) {
 
-        //The list of news
-        final List<News> news = new ArrayList<>();
-        News prueba =  new News((long)123,"hola", "teletrece", "yo", "www.holi.com"
-                                ,"www.holi.com/imagen.jpg", "oikefvhjeroifheof", "wdfefgrtg"
-                                , ZonedDateTime.now());
-        for (int i = 0; i <5; i++){
-            news.add(prueba);
+        //Return all the data.
+        if (size > theNews.size()){
+            return  Collections.unmodifiableList(this.theNews);
         }
 
+        // The last "size" elements.
+        return Collections.unmodifiableList(theNews.subList(theNews.size() -  size, theNews.size()));
 
-        // TODO: Add the faker news to the list
-
-        return news;
     }
+
+    /**
+     * Save one News into the System. Don´t allow repeated
+     *
+     * @param news
+     */
+    @Override
+    public void saveNews(final News news){
+
+        // Nullity
+        Validation.notNull(news, "news");
+
+        // Check duplicates
+        for (News n: this.theNews){
+            if (n.getId().equals(news.getId())){
+                throw new IllegalArgumentException("no se puede duplicar la News!");
+            }
+        }
+
+        // Add news
+        this.theNews.add(news);
+
+    }
+
+
 }
